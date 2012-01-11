@@ -15,7 +15,7 @@ class ClosureRecorderDelegateSpec extends Specification {
     given: "a closure with a few external sentences"
     def closure = {
       the quick, brown fox
-      jumps over the lazy dog
+      jumps over: the lazy dog
     }
     when: "the delegate is set as the closure's delegate"
     closure.setDelegate(delegate)
@@ -30,14 +30,12 @@ class ClosureRecorderDelegateSpec extends Specification {
     recordedCalls[0][0].args == ["quick", "brown"]
     recordedCalls[0][1].type == Call.Type.READ_PROPERTY
     recordedCalls[0][1].name == "fox"
-    recordedCalls[1].size() == 3
+    recordedCalls[1].size() == 2
     recordedCalls[1][0].type == Call.Type.CALL_METHOD
     recordedCalls[1][0].name == "jumps"
-    recordedCalls[1][0].args == ["over"]
+    recordedCalls[1][0].args == [[over:"the"]]
     recordedCalls[1][1].type == Call.Type.CALL_METHOD
-    recordedCalls[1][1].name == "the"
-    recordedCalls[1][1].args == ["lazy"]
-    recordedCalls[1][2].type == Call.Type.READ_PROPERTY
-    recordedCalls[1][2].name == "dog"
+    recordedCalls[1][1].name == "lazy"
+    recordedCalls[1][1].args == ["dog"]
   }
 }

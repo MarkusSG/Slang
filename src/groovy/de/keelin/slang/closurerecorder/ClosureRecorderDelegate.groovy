@@ -52,6 +52,18 @@ private class ClosureSentenceRecorder {
       if (arg instanceof Call) {
         propertyReadsToBeRemoved << arg
         arg.name
+      } else if (arg instanceof Map) {
+        Map replacements = [:]
+        arg.each {key, value ->
+          if (value instanceof Call) {
+            propertyReadsToBeRemoved << value
+            replacements.put(key, value.name)
+          }
+        }
+        replacements.each {key, value ->
+          arg.put(key, value)
+        }
+        arg
       } else {
         arg
       }
