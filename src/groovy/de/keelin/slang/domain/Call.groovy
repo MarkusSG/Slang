@@ -19,7 +19,7 @@ class Call {
   }
 
   static CallWithSubexpressions propertyAssignment(final String name, final Expression parent, final Expression value) {
-    new CallWithSubexpressions(name, CallType.PROPERTY_ASSIGNMENT, parent, value)
+    new CallWithSubexpressions(name, CallType.PROPERTY_ASSIGNMENT, parent, [value])
   }
 
   static CallWithSubexpressions method(final String name,  final Expression parent, final List<Expression> params) {
