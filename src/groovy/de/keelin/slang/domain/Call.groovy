@@ -18,15 +18,15 @@ class Call {
     new Call(value, CallType.OBJECT_REF, parent)
   }
 
-  static Call propertyAssignment(final String name, final Expression parent, final Expression value) {
+  static CallWithSubexpressions propertyAssignment(final String name, final Expression parent, final Expression value) {
     new CallWithSubexpressions(name, CallType.PROPERTY_ASSIGNMENT, parent, value)
   }
 
-  static Call method(final String name,  final Expression parent, final List<Expression> params) {
+  static CallWithSubexpressions method(final String name,  final Expression parent, final List<Expression> params) {
     new CallWithSubexpressions(name, CallType.METHOD, parent, params)
   }
 
-  static Call method(final String name,  final Expression parent) {
+  static CallWithSubexpressions method(final String name,  final Expression parent) {
     method(name, parent, [])
   }
 
