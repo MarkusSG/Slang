@@ -29,13 +29,25 @@ class SentenceRecordingSpec extends Specification {
   }
 
   def "recordMethod() records a simple method call on top of an existing call before that" () {
-    given: "a recorder that has already recorded a method call"
-    recording.recordMethodCall("prepMethod", ["prepParam1", "prepParam2"])
+    given: "a recorder that has already recorded a propertyRead"
+    recording.recordPropertyRead("prepProperty")
     when : "the recording shall record a method call with one String parameter"
     recording.recordMethodCall("testMethod", ["parameter1"])
     then :
-    recording.size == 5
+    recording.size == 3
     recording.rootExpression.calls.size() == 2
-    recording.words == ["prepMethod", "prepParam1","prepParam2", "testMethod", "parameter1"]
+    recording.words == ["prepProperty", "testMethod", "parameter1"]
+  }
+
+  def "recordPropertyRead() records a simple propertyRead" () {
+    given: "a recorder that has already recorded a method call"
+    recording.recordMethodCall("prepMethod", ["prepParam1", "prepParam2"])
+    when : "the recording shall record a simple property read"
+    recording.recordPropertyRead("testProp")
+    then :
+    recording.size == 4
+    recording.rootExpression.calls.size() == 2
+    recording.words == ["prepMethod", "prepParam1", "prepParam2", "testProp"]
+    recording.rootExpression.calls[1].type == CallType.PROPERTY_READ
   }
 }

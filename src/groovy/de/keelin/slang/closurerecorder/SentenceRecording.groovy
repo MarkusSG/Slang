@@ -4,6 +4,8 @@ import de.keelin.slang.domain.Expression
 import de.keelin.slang.domain.Call
 import de.keelin.slang.domain.CallWithSubexpressions
 
+import static de.keelin.slang.domain.Expression.*
+import static de.keelin.slang.domain.Call.*
 /**
  * Date: 31.01.12
  * Time: 16:10
@@ -22,19 +24,29 @@ class SentenceRecording {
   }
 
   def recordMethodCall(String name, List params) {
-    if (!rootExpression) {
-      rootExpression = Expression.methodParamCallChain(null)
-    }
-    CallWithSubexpressions method = Call.method(name,rootExpression)
+    initRootExpression()
+    CallWithSubexpressions method = method(name,rootExpression)
     rootExpression.calls << method
     method.subexpressions.addAll(convertParams(params, method))
   }
 
-  List<Expression> convertParams(params, Call parent) {
+  def recordPropertyRead(String name) {
+    initRootExpression()
+    rootExpression.calls << Call.propertyRead(name, rootExpression)
+  }
+
+  private Expression initRootExpression() {
+    if (!rootExpression) {
+      rootExpression = Expression.methodParamCallChain(null)
+    }
+  }
+
+  private List<Expression> convertParams(params, Call parent) {
     params.collect {
       Expression ex = Expression.methodParamCallChain(parent)
       ex.calls << Call.objectRef(it, ex)
       ex
     }
   }
+
 }
