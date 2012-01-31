@@ -22,7 +22,9 @@ class SentenceRecording {
   }
 
   def recordMethodCall(String name, List params) {
-    rootExpression = Expression.methodParamCallChain(null)
+    if (!rootExpression) {
+      rootExpression = Expression.methodParamCallChain(null)
+    }
     CallWithSubexpressions method = Call.method(name,rootExpression)
     rootExpression.calls << method
     method.subexpressions.addAll(convertParams(params, method))
