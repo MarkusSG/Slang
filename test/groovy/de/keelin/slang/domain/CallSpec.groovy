@@ -11,15 +11,12 @@ class CallSpec extends Specification {
 
 
   def "Call.words() returns a List of Strings representing the Call and it's subexpresions" () {
-    if (call instanceof CallWithSubexpressions && subexpressions) {
-      call.subexpressions += subexpressions
-    }
     expect:
     call.words == expectedWords
     where:
-    call                                           | subexpressions | expectedWords
-    objectRef("text", null)                        | null           | ["text"]
-    methodWithParams("method", "param1", "param2") | null           | ["method", "param1", "param2"]
+    call                                                       | expectedWords
+    objectRef("text", null)                                    | ["text"]
+    methodWithParams("method", "param1", "param2")             | ["method", "param1", "param2"]
   }
 
   static Call methodWithParams(String name, Object... params) {

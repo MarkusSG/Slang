@@ -32,18 +32,18 @@ class SentenceRecording {
 
   def recordPropertyRead(String name) {
     initRootExpression()
-    rootExpression.calls << Call.propertyRead(name, rootExpression)
+    rootExpression.calls << propertyRead(name, rootExpression)
   }
 
-  private Expression initRootExpression() {
+  private void initRootExpression() {
     if (!rootExpression) {
-      rootExpression = Expression.methodParamCallChain(null)
+      rootExpression = methodParamCallChain(null)
     }
   }
 
   private List<Expression> convertParams(params, Call parent) {
     params.collect {
-      Expression ex = Expression.methodParamCallChain(parent)
+      Expression ex = methodParamCallChain(parent)
       ex.calls << Call.objectRef(it, ex)
       ex
     }
