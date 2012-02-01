@@ -30,6 +30,16 @@ class SentenceRecordingSpec extends Specification {
     recording.rootExpression.calls[0].subexpressions[0].calls[0].type == CallType.OBJECT_REF
   }
 
+  def "recordMethod() can handle Map-parameters" () {
+    when:
+    recording.recordMethodCall("testMethod", [[key1:"value1", key2:"value2"]])
+    then:
+    recording.words ==
+        ["testMethod", "key1", "value1", "key2", "value2"] ||
+      recording.words ==
+        ["testMethod", "key2", "value2", "key1", "value1"]
+  }
+
   def "recordMethod() records a simple method call on top of an existing call before that" () {
     given: "a recorder that has already recorded a propertyRead"
     recording.recordPropertyRead("prepProperty")

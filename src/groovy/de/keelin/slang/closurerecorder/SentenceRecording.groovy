@@ -45,6 +45,13 @@ class SentenceRecording {
     params.collect {
       if (it instanceof ExpressionRecording) {
         delegatePropertyRegistry?.remove(it)
+      } else if (it instanceof Map) {
+        Expression ex = methodParamMap(parent)
+        it.each {key, value ->
+          ex.calls << objectRef(key, ex)
+          ex.calls << objectRef(value, ex)
+        }
+        ex
       } else {
         Expression ex = methodParamCallChain(parent)
         ex.calls << objectRef(it, ex)
