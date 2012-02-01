@@ -17,13 +17,19 @@ class CallSpec extends Specification {
     call                                                       | expectedWords
     objectRef("text", null)                                    | ["text"]
     methodWithParams("method", "param1", "param2")             | ["method", "param1", "param2"]
+    methodWithParams("method", [key1: param1, key2: "param2"]) | ["method", "key1", "param1", "key2", "param2"]
   }
 
   static Call methodWithParams(String name, Object... params) {
     CallWithSubexpressions result = method(name, null)
     params.each {
       if (it instanceof Map) {
-        // TODO
+        Expression ex = methodParamMap(null)
+        it.each {key, value ->
+          ex.calls << Call.objectRef(key, ex)
+          ex.calls << Call.objectRef(value, ex)
+        }
+        result.subexpressions << ex
       } else if (it instanceof Expression) {
         result.subexpressions << it
       } else {
