@@ -21,8 +21,8 @@ class DelegatePropertyRegistry {
   }
 
   def remove(ExpressionRecording recording) {
-    expressions.remove(
-        recordings2Expressions.remove(
-            recording))
+    def removeExpression = recordings2Expressions.remove(recording)
+    expressions.remove(removeExpression)
+    removeExpression
   }
 }

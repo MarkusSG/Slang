@@ -38,12 +38,12 @@ class DelegatePropertyRegistrySpec extends Specification {
     registry.add(exp1, rec1)
     registry.add(exp3, rec3)
     registry.add(exp4, rec4)
-    then:
+    then: "the expressions-list reflects the exact order in which the Expressions were registered"
     registry.getExpressions() == [exp2, exp1, exp3, exp4]
   }
 
   def "remove() will remove the exact expression specified for both kinds of access" () {
-    given:
+    given: "a couple entries in the registry"
     Expression exp1 = propertyRead("prop")
     ExpressionRecording rec1 = new ExpressionRecording(exp1)
     Expression exp2 = propertyRead("prop")
@@ -56,11 +56,13 @@ class DelegatePropertyRegistrySpec extends Specification {
     registry.add(exp1, rec1)
     registry.add(exp3, rec3)
     registry.add(exp4, rec4)
-    when:
-    registry.remove(rec3)
-    then:
+    when: "one entry is removed"
+    def removeResult = registry.remove(rec3)
+    then: "exactly that and only that entry has been removed"
     registry.expressions == [exp2, exp1, exp4]
     registry.expressions != [exp2, exp1, exp3]
     registry.getExpression(rec3) == null
+    and: "remove() itself has returned the removed Expression"
+    removeResult == exp3
   }
 }
