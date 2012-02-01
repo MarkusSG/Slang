@@ -4,7 +4,8 @@ import spock.lang.Specification
 import de.keelin.slang.domain.CallType
 import de.keelin.slang.domain.CallWithSubexpressions
 import de.keelin.slang.domain.ExpressionType
-import static de.keelin.slang.closurerecorder.ExpressionRecordingTestUtil.*
+import static de.keelin.slang.domain.ExpressionTestUtil.*
+import de.keelin.slang.domain.Expression
 
 /**
  * Date: 31.01.12
@@ -44,12 +45,16 @@ class SentenceRecordingSpec extends Specification {
     given: "a DelegatePropertyRegistry for the recording"
     DelegatePropertyRegistry registry = new DelegatePropertyRegistry()
     recording.delegatePropertyRegistry = registry
-    and: "an ExpressionRecording (for the method parameter)"
-    ExpressionRecording param = registeredPropertyRead("param1", registry)
+    and: "an Expression and a wrapping ExpressionRecording (for the method parameter)"
+    Expression paramExpression = propertyRead("param1")
+    ExpressionRecording param = new ExpressionRecording(paramExpression)
+    registry.add(paramExpression, param)
     when : "recordMethod() is called with that ExpressionRecording as a parameter"
     recording.recordMethodCall("testMethod", [param])
     then : "the param is not registered with the registry anymore"
     registry.expressions == []
+    and: "the ExpressionRecording holds the specified Expression as parameter"
+    recording.rootExpression.calls[0].subexpressions[0] == paramExpression
   }
 
   def "recordPropertyRead() records a simple propertyRead" () {
