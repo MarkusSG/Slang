@@ -12,4 +12,11 @@ class ExpressionRecordingTestUtil {
     new ExpressionRecording(ExpressionTestUtil.propertyRead(name))
   }
 
+  static ExpressionRecording registeredPropertyRead(String name, DelegatePropertyRegistry registry) {
+    def propertyExpression = ExpressionTestUtil.propertyRead(name)
+    ExpressionRecording recording = new ExpressionRecording(propertyExpression)
+    registry.add(propertyExpression, recording)
+    recording
+  }
+
 }

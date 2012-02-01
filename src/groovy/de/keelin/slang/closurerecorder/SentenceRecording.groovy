@@ -12,8 +12,8 @@ import static de.keelin.slang.domain.Call.*
  */
 class SentenceRecording {
 
-
   Expression rootExpression
+  DelegatePropertyRegistry delegatePropertyRegistry
 
   int getSize() {
     getWords().size()
@@ -43,9 +43,13 @@ class SentenceRecording {
 
   private List<Expression> convertParams(params, Call parent) {
     params.collect {
-      Expression ex = methodParamCallChain(parent)
-      ex.calls << Call.objectRef(it, ex)
-      ex
+      if (it instanceof ExpressionRecording) {
+        delegatePropertyRegistry?.remove(it)
+      } else {
+        Expression ex = methodParamCallChain(parent)
+        ex.calls << objectRef(it, ex)
+        ex
+      }
     }
   }
 
