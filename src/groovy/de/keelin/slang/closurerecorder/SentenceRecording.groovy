@@ -49,7 +49,11 @@ class SentenceRecording {
         Expression ex = methodParamMap(parent)
         it.each {key, value ->
           ex.calls << objectRef(key, ex)
-          ex.calls << objectRef(value, ex)
+          if (value instanceof ExpressionRecording) {
+            ex.calls << delegatePropertyRegistry.remove(value)
+          } else {
+            ex.calls << objectRef(value, ex)
+          }
         }
         ex
       } else {

@@ -6,6 +6,7 @@ import de.keelin.slang.domain.CallWithSubexpressions
 import de.keelin.slang.domain.ExpressionType
 import static de.keelin.slang.domain.ExpressionTestUtil.*
 import de.keelin.slang.domain.Expression
+import de.keelin.slang.domain.ExpressionTestUtil
 
 /**
  * Date: 31.01.12
@@ -30,14 +31,23 @@ class SentenceRecordingSpec extends Specification {
     recording.rootExpression.calls[0].subexpressions[0].calls[0].type == CallType.OBJECT_REF
   }
 
-  def "recordMethod() can handle Map-parameters" () {
+  def "recordMethod() can handle Map-parameters containing ExpressionRecordings as values" () {
+    given: "a Map containing method parameters including one ExpressionRecording..."
+    Expression paramExpression = ExpressionTestUtil.propertyRead("value2")
+    ExpressionRecording param = new ExpressionRecording(paramExpression)
+    Map params = [key1:"value1", key2:param]
+    and: "that ExpressionRecording is also registered with the reording's DelegatePropertyRegistry"
+    DelegatePropertyRegistry registry = new DelegatePropertyRegistry()
+    recording.delegatePropertyRegistry = registry
+    registry.add(paramExpression, param)
     when:
-    recording.recordMethodCall("testMethod", [[key1:"value1", key2:"value2"]])
+    recording.recordMethodCall("testMethod", [params])
     then:
     recording.words ==
         ["testMethod", "key1", "value1", "key2", "value2"] ||
       recording.words ==
         ["testMethod", "key2", "value2", "key1", "value1"]
+    registry.expressions.isEmpty()
   }
 
   def "recordMethod() records a simple method call on top of an existing call before that" () {
