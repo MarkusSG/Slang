@@ -8,20 +8,20 @@ import de.keelin.slang.domain.Expression
  */
 class DelegatePropertyRegistry {
 
-  Map<ExpressionRecording, Expression> recordings2Expressions = [:]
+  Map<ExpressionRecordingDelegate, Expression> recordings2Expressions = [:]
   List<Expression> expressions = []
 
-  def add(Expression expression, ExpressionRecording recording) {
-    recordings2Expressions[(recording)] = expression
+  def add(Expression expression, ExpressionRecordingDelegate delegate) {
+    recordings2Expressions[(delegate)] = expression
     expressions << expression
   }
 
-  Expression getExpression(ExpressionRecording recording) {
-    recordings2Expressions[(recording)]
+  Expression getExpression(ExpressionRecordingDelegate delegate) {
+    recordings2Expressions[(delegate)]
   }
 
-  def remove(ExpressionRecording recording) {
-    def removeExpression = recordings2Expressions.remove(recording)
+  def remove(ExpressionRecordingDelegate delegate) {
+    def removeExpression = recordings2Expressions.remove(delegate)
     expressions.remove(removeExpression)
     removeExpression
   }

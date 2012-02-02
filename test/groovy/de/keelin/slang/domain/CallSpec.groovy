@@ -14,10 +14,10 @@ class CallSpec extends Specification {
     expect:
     call.words == expectedWords
     where:
-    call                                                       | expectedWords
-    objectRef("text", null)                                    | ["text"]
-    methodWithParams("method", "param1", "param2")             | ["method", "param1", "param2"]
-    methodWithParams("method", [key1: param1, key2: "param2"]) | ["method", "key1", "param1", "key2", "param2"]
+    call                                                         | expectedWords
+    objectRef("text", null)                                      | ["text"]
+    methodWithParams("method", "param1", "param2")               | ["method", "param1", "param2"]
+    methodWithParams("method", [key1: "param1", key2: "param2"]) | ["method", "key1", "param1", "key2", "param2"]
   }
 
   static Call methodWithParams(String name, Object... params) {
