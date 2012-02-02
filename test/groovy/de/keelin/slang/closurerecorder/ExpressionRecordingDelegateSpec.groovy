@@ -18,4 +18,11 @@ class ExpressionRecordingDelegateSpec extends Specification {
     1 * recording.recordMethodCall("someMethod", [[with:3], "arbitrary", "parameters"])
   }
 
+  def "delegate will relay some arbitrary property read to the wrapped ExpressionRecording" () {
+    when : "some property is read on the delegate"
+    delegate.someProperty
+    then : "recordPropertyRead() will be called with the name of the requested property as parameter"
+    1 * recording.recordPropertyRead("someProperty")
+  }
+
 }

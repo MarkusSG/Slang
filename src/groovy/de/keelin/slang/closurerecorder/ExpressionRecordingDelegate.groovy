@@ -16,4 +16,9 @@ class ExpressionRecordingDelegate implements GroovyInterceptable {
   def invokeMethod(String name, args) {
     recording.recordMethodCall(name, [*args])
   }
+
+  @Override
+  def getProperty(String name) {
+    recording.recordPropertyRead(name)
+  }
 }
