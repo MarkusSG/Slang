@@ -18,7 +18,7 @@ class ExpressionRecordingSpec extends Specification {
   DelegatePropertyRegistry registry = new DelegatePropertyRegistry()
   ExpressionRecording recording = new ExpressionRecording(sentenceRoot(), registry)
 
-  def "recordMethod() records a simple method call" () {
+  def "recordMethodCall() records a simple method call" () {
     when : "the recording shall record a method call with one String parameter"
     recording.recordMethodCall("testMethod", ["parameter1"])
     then :
