@@ -9,6 +9,7 @@ import de.keelin.slang.domain.Expression
 import de.keelin.slang.domain.ExpressionTestUtil
 
 import static de.keelin.slang.domain.Expression.*
+import de.keelin.slang.domain.ExpressionRole
 /**
  * Date: 31.01.12
  * Time: 16:09
@@ -41,13 +42,16 @@ class ExpressionRecordingSpec extends Specification {
     Map params = [key1:"value1", key2:param]
     and: "that ExpressionRecording is also registered with the reording's DelegatePropertyRegistry"
     registry.add(paramExpression, param)
-    when:
+    when: "recordMethodCall() is called with that parameter Map"
     recording.recordMethodCall("testMethod", [params])
-    then:
+    then: "the contents of the parameter Map are resolved correctly, including the expressions"
     recording.words ==
         ["testMethod", "key1", "value1", "key2", "value2"] ||
       recording.words ==
         ["testMethod", "key2", "value2", "key1", "value1"]
+    and: "the expressions used as parameters have switched their role according to their usage"
+    paramExpression.role == ExpressionRole.MAP_VALUE
+    and: "the expressions used as parameters have been removed from the registry"
     registry.expressions.isEmpty()
   }
 
@@ -74,6 +78,8 @@ class ExpressionRecordingSpec extends Specification {
     registry.expressions == []
     and: "the ExpressionRecording holds the specified Expression as parameter"
     recording.expression.calls[0].subexpressions[0] == paramExpression
+    and: "the parameter epression has switched roles"
+    paramExpression.role == ExpressionRole.METHOD_PARAM
   }
 
   def "recordPropertyRead() records a simple propertyRead" () {

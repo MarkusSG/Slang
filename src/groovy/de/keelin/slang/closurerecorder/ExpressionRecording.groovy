@@ -6,6 +6,7 @@ import de.keelin.slang.domain.CallWithSubexpressions
 
 import static de.keelin.slang.domain.Expression.*
 import static de.keelin.slang.domain.Call.*
+import de.keelin.slang.domain.ExpressionRole
 /**
  * Date: 31.01.12
  * Time: 16:10
@@ -49,13 +50,17 @@ class ExpressionRecording {
   private List<Expression> convertParams(params, Call parent) {
     params.collect {
       if (it instanceof ExpressionRecordingDelegate) {
-        delegatePropertyRegistry?.remove(it)
+        Expression expression = delegatePropertyRegistry?.remove(it)
+        expression.role = ExpressionRole.METHOD_PARAM
+        expression
       } else if (it instanceof Map) {
         Expression ex = methodParamMap(parent)
         it.each {key, value ->
           ex.calls << objectRef(key, ex)
           if (value instanceof ExpressionRecordingDelegate) {
-            ex.calls << delegatePropertyRegistry.remove(value)
+            def valueExpression = delegatePropertyRegistry.remove(value)
+            valueExpression.role = ExpressionRole.MAP_VALUE
+            ex.calls << valueExpression
           } else {
             ex.calls << objectRef(value, ex)
           }

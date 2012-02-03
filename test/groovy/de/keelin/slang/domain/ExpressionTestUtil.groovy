@@ -10,7 +10,7 @@ import static de.keelin.slang.domain.Call.*
 class ExpressionTestUtil {
 
   static Expression propertyRead(String name) {
-    Expression expression = methodParamCallChain(null)
+    Expression expression = sentenceRoot()
     expression.calls << propertyRead(name, expression)
     expression
   }

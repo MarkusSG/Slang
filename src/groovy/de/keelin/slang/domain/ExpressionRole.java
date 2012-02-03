@@ -5,5 +5,5 @@ package de.keelin.slang.domain;
  * Time: 14:33
  */
 public enum ExpressionRole {
-  SENTENCE_ROOT, METHOD_PARAM, ASSIGNMENT_VALUE
+  SENTENCE_ROOT, METHOD_PARAM, MAP_VALUE, ASSIGNMENT_VALUE
 }
