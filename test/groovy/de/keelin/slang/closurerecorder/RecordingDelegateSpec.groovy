@@ -6,10 +6,10 @@ import spock.lang.Specification
  * Date: 02.02.12
  * Time: 12:51
  */
-class ExpressionRecordingDelegateSpec extends Specification {
+class RecordingDelegateSpec extends Specification {
 
   ExpressionRecording recording = Mock()
-  ExpressionRecordingDelegate delegate = new ExpressionRecordingDelegate(recording)
+  RecordingDelegate delegate = new RecordingDelegate(recording)
 
   def "delegate will relay some arbitrary method call to the wrapped ExpressionRecording" () {
     when : "some method is called on the delegate with arbitrary parameters"

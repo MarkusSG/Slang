@@ -35,10 +35,10 @@ class ExpressionRecordingSpec extends Specification {
   }
 
   def "recordMethod() can handle Map-parameters containing ExpressionRecordingDelegates as values" () {
-    given: "a Map containing method parameters including one ExpressionRecordingDelegate..."
+    given: "a Map containing method parameters including one RecordingDelegate..."
     Expression paramExpression = ExpressionTestUtil.propertyRead("value2")
     ExpressionRecording paramRec = new ExpressionRecording(paramExpression, registry)
-    ExpressionRecordingDelegate param = new ExpressionRecordingDelegate(paramRec)
+    RecordingDelegate param = new RecordingDelegate(paramRec)
     Map params = [key1:"value1", key2:param]
     and: "that ExpressionRecording is also registered with the reording's DelegatePropertyRegistry"
     registry.add(paramExpression, param)
@@ -67,10 +67,10 @@ class ExpressionRecordingSpec extends Specification {
   }
 
   def "recordMethod() handles the erasure of parameters from the DelegatePropertyRegistry" () {
-    given: "an Expression and a wrapping ExpressionRecordingDelegate (for the method parameter)"
+    given: "an Expression and a wrapping RecordingDelegate (for the method parameter)"
     Expression paramExpression = propertyRead("param1")
     ExpressionRecording paramRec = new ExpressionRecording(paramExpression, registry)
-    ExpressionRecordingDelegate param = new ExpressionRecordingDelegate(paramRec)
+    RecordingDelegate param = new RecordingDelegate(paramRec)
     registry.add(paramExpression, param)
     when : "recordMethod() is called with that ExpressionRecording as a parameter"
     recording.recordMethodCall("testMethod", [param])

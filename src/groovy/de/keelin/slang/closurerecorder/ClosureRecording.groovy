@@ -6,7 +6,7 @@ import de.keelin.slang.domain.Expression
  * Date: 02.02.12
  * Time: 16:52
  */
-class ClosureRecording {
+class ClosureRecording implements Recording{
 
   final DelegatePropertyRegistry registry
   final List<Expression> sentences
@@ -20,23 +20,23 @@ class ClosureRecording {
     this.sentences = sentences
   }
 
-  ExpressionRecordingDelegate recordPropertyRead(final String name) {
+  RecordingDelegate recordPropertyRead(final String name) {
     Expression expression = Expression.sentenceRoot()
     ExpressionRecording recording = new ExpressionRecording(expression, registry)
     recording.recordPropertyRead(name)
-    ExpressionRecordingDelegate result = new ExpressionRecordingDelegate(recording)
+    RecordingDelegate result = new RecordingDelegate(recording)
     registry.add(expression, result)
     result
   }
 
-  ExpressionRecordingDelegate recordMethodCall(final String name, final List args) {
+  RecordingDelegate recordMethodCall(final String name, final List args) {
     Expression expression = Expression.sentenceRoot()
     ExpressionRecording recording = new ExpressionRecording(expression, registry)
     recording.recordMethodCall(name, args)
     sentences.addAll(registry.expressions)
     registry.expressions.clear()
     sentences << expression
-    ExpressionRecordingDelegate result = new ExpressionRecordingDelegate(recording)
+    RecordingDelegate result = new RecordingDelegate(recording)
     result
   }
 

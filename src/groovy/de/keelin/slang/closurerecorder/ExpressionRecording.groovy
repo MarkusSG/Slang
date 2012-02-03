@@ -11,7 +11,7 @@ import de.keelin.slang.domain.ExpressionRole
  * Date: 31.01.12
  * Time: 16:10
  */
-class ExpressionRecording {
+class ExpressionRecording implements Recording{
 
   Expression expression
   DelegatePropertyRegistry delegatePropertyRegistry
@@ -49,7 +49,7 @@ class ExpressionRecording {
 
   private List<Expression> convertParams(params, Call parent) {
     params.collect {
-      if (it instanceof ExpressionRecordingDelegate) {
+      if (it instanceof RecordingDelegate) {
         Expression expression = delegatePropertyRegistry?.remove(it)
         expression.role = ExpressionRole.METHOD_PARAM
         expression
@@ -57,7 +57,7 @@ class ExpressionRecording {
         Expression ex = methodParamMap(parent)
         it.each {key, value ->
           ex.calls << objectRef(key, ex)
-          if (value instanceof ExpressionRecordingDelegate) {
+          if (value instanceof RecordingDelegate) {
             def valueExpression = delegatePropertyRegistry.remove(value)
             valueExpression.role = ExpressionRole.MAP_VALUE
             ex.calls << valueExpression

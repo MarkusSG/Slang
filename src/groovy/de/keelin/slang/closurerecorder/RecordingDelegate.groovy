@@ -4,11 +4,11 @@ package de.keelin.slang.closurerecorder
  * Date: 02.02.12
  * Time: 07:37
  */
-class ExpressionRecordingDelegate implements GroovyInterceptable {
+class RecordingDelegate implements GroovyInterceptable {
 
-  final ExpressionRecording recording
+  final Recording recording
 
-  ExpressionRecordingDelegate(ExpressionRecording recording) {
+  RecordingDelegate(Recording recording) {
     this.recording = recording
   }
 

@@ -16,7 +16,7 @@ class ClosureRecordingSpec extends Specification {
 
     def "recordPropertyRead() returns a new ExpressionRecordingDelegate for the recorded property Read" () {
       when : "recordPropertyRead() is called"
-      ExpressionRecordingDelegate expressionDelegate = recording.recordPropertyRead("someProperty")
+      RecordingDelegate expressionDelegate = recording.recordPropertyRead("someProperty")
       then : "the registry holds an Expression for the returned delegate"
       registry.getExpression(expressionDelegate)
       and: "that Expression matches the recorded method call"
@@ -27,7 +27,7 @@ class ClosureRecordingSpec extends Specification {
 
     def "recordMethodCall() returns a new ExpressionRecordingDelegate for the recorded method call" () {
       when : "recordMethodCall() is called"
-      ExpressionRecordingDelegate expressionDelegate = recording.recordMethodCall("someMethod", ["param1"])
+      RecordingDelegate expressionDelegate = recording.recordMethodCall("someMethod", ["param1"])
       then : "the recording holds a reference to the created Expression / sentence"
       recording.sentences[0].words == ["someMethod", "param1"]
       recording.sentences[0].role == ExpressionRole.SENTENCE_ROOT
@@ -40,7 +40,7 @@ class ClosureRecordingSpec extends Specification {
     given: "a recording with a couple of unused property reads in the registry"
     recording.recordPropertyRead("prop1")
     recording.recordPropertyRead("prop2")
-    ExpressionRecordingDelegate parameter = recording.recordPropertyRead("prop3")
+    RecordingDelegate parameter = recording.recordPropertyRead("prop3")
     when: "recordMethodCall() is called, using one of the property reads as parameter"
     recording.recordMethodCall("method", [parameter])
     then: "the registry is empty"
