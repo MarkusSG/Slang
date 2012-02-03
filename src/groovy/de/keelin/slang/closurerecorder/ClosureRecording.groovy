@@ -20,7 +20,7 @@ class ClosureRecording {
     this.sentences = sentences
   }
 
-  def recordPropertyRead(final String name) {
+  ExpressionRecordingDelegate recordPropertyRead(final String name) {
     Expression expression = Expression.sentenceRoot()
     ExpressionRecording recording = new ExpressionRecording(expression, registry)
     recording.recordPropertyRead(name)
@@ -29,11 +29,13 @@ class ClosureRecording {
     result
   }
 
-  def recordMethodCall(final String name, final List args) {
+  ExpressionRecordingDelegate recordMethodCall(final String name, final List args) {
     Expression expression = Expression.sentenceRoot()
-    sentences << expression
     ExpressionRecording recording = new ExpressionRecording(expression, registry)
     recording.recordMethodCall(name, args)
+    sentences.addAll(registry.expressions)
+    registry.expressions.clear()
+    sentences << expression
     ExpressionRecordingDelegate result = new ExpressionRecordingDelegate(recording)
     result
   }

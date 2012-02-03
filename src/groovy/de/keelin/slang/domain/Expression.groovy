@@ -9,7 +9,7 @@ class Expression {
   final Call parent
   final List<Call> calls = []
   final ExpressionType type
-  final ExpressionRole role
+  ExpressionRole role
 
   static Expression sentenceRoot() {
     new Expression (null, ExpressionType.CALL_CHAIN, ExpressionRole.SENTENCE_ROOT)
