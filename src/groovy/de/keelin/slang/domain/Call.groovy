@@ -30,6 +30,10 @@ class Call {
     method(name, parent, [])
   }
 
+  static CallWithSubexpressions mapEntry(key, Expression value, Expression parent) {
+    new CallWithSubexpressions(key,CallType.MAP_ENTRY, parent, [value])
+  }
+
   Call(final value, final CallType type, final Expression parent) {
     this.value = value
     this.parent = parent
@@ -49,6 +53,9 @@ class CallWithSubexpressions extends Call {
   CallWithSubexpressions(value, CallType type, Expression parent, List<Expression> subexpressions) {
     super(value, type, parent)
     this.subexpressions = subexpressions
+    subexpressions.each {Expression subExpression ->
+      subExpression.parent = this
+    }
   }
 
   @Override

@@ -20,6 +20,21 @@ class CallSpec extends Specification {
     methodWithParams("method", [key1: "param1", key2: "param2"]) | ["method", "key1", "param1", "key2", "param2"]
   }
 
+  def "mapEntry() creates a map-entry Call" () {
+    given: "a Map Expression as parent for the map-entry Call"
+    Expression parent = Expression.methodParamMap(null)
+    and: "some Expression as value for the map entry"
+    Expression value = Expression.sentenceRoot()
+    when: "mapEntry is called"
+    CallWithSubexpressions result = Call.mapEntry("key", value, parent)
+    then: "the result has the correct structure of a map-entry Expression"
+    result.parent == parent
+    result.value == "key"
+    result.subexpressions.size() == 1
+    result.subexpressions[0] == value
+    result.subexpressions[0].parent == result
+  }
+
   static Call methodWithParams(String name, Object... params) {
     CallWithSubexpressions result = method(name, null)
     params.each {

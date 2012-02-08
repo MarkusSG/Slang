@@ -5,5 +5,5 @@ package de.keelin.slang.domain;
  * Time: 12:49
  */
 public enum CallType {
-  METHOD, PROPERTY_READ, PROPERTY_ASSIGNMENT, OBJECT_REF
+  METHOD, PROPERTY_READ, PROPERTY_ASSIGNMENT, OBJECT_REF, MAP_ENTRY
 }

@@ -11,7 +11,6 @@ import spock.lang.Specification
 class ExpressionSpec extends Specification {
 
   def "Expression.words() returns a List of Strings representing the Expression's calls" () {
-
     expect:
     ex.words == expectedWords
     where:

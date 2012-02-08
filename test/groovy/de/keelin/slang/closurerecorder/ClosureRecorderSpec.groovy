@@ -2,6 +2,7 @@ package de.keelin.slang.closurerecorder
 
 import spock.lang.Specification
 import de.keelin.slang.domain.Expression
+import de.keelin.slang.domain.ExpressionTestUtil
 
 /**
  * Date: 05.02.12
@@ -23,6 +24,8 @@ class ClosureRecorderSpec extends Specification {
     result.size() == 2
     result[0].words == ["the", "quick", "brown", "fox"]
     result[1].words == ["jumps", "over", "the", "lazy", "dog"]
+    ExpressionTestUtil.checkHierarchy(result[0]) == []
+    ExpressionTestUtil.checkHierarchy(result[1]) == []
   }
 
   def "the closure's original delegate is restored after recording" () {

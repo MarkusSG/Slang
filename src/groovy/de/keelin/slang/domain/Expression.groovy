@@ -6,7 +6,7 @@ package de.keelin.slang.domain
  */
 class Expression {
 
-  final Call parent
+  Call parent
   final List<Call> calls = []
   final ExpressionType type
   ExpressionRole role
