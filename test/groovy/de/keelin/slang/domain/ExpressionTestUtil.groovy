@@ -11,7 +11,7 @@ class ExpressionTestUtil {
 
   static Expression propertyRead(String name) {
     Expression expression = sentenceRoot()
-    expression.calls << propertyRead(name, expression)
+    expression.calls << propertyRead(name, CallOrigin.DELEGATE)
     expression
   }
 

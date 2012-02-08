@@ -7,6 +7,7 @@ import de.keelin.slang.domain.CallWithSubexpressions
 import static de.keelin.slang.domain.Expression.*
 import static de.keelin.slang.domain.Call.*
 import de.keelin.slang.domain.ExpressionRole
+import de.keelin.slang.domain.CallOrigin
 /**
  * Date: 31.01.12
  * Time: 16:10
@@ -15,6 +16,7 @@ class ExpressionRecording implements Recording{
 
   Expression expression
   DelegatePropertyRegistry delegatePropertyRegistry
+  CallOrigin origin = CallOrigin.DELEGATE
 
   ExpressionRecording(Expression expression, DelegatePropertyRegistry registry) {
     this.expression = expression
@@ -31,14 +33,16 @@ class ExpressionRecording implements Recording{
 
   def recordMethodCall(String name, List params) {
     initRootExpression()
-    CallWithSubexpressions method = method(name,expression)
+    CallWithSubexpressions method = method(name, origin)
+    origin = CallOrigin.PREDECESSOR
     expression.calls << method
     method.subexpressions.addAll(convertParams(params, method))
   }
 
   def recordPropertyRead(String name) {
     initRootExpression()
-    expression.calls << propertyRead(name, expression)
+    expression.calls << propertyRead(name, origin)
+    origin = CallOrigin.PREDECESSOR
   }
 
   private void initRootExpression() {
@@ -65,14 +69,14 @@ class ExpressionRecording implements Recording{
             valueExpression = Expression.methodParamCallChain(null)
             valueExpression.calls << objectRef(value, null)
           }
-          mapExpression.calls << Call.mapEntry(key, valueExpression, mapExpression)
+          mapExpression.calls << Call.mapEntry(key, valueExpression)
           valueExpression.role = ExpressionRole.MAP_VALUE
           valueExpression.parent = mapExpression.calls[-1]
         }
         mapExpression
       } else {
         Expression ex = methodParamCallChain(parent)
-        ex.calls << objectRef(it, ex)
+        ex.calls << objectRef(it, null)
         ex
       }
     }

@@ -22,13 +22,12 @@ class CallSpec extends Specification {
 
   def "mapEntry() creates a map-entry Call" () {
     given: "a Map Expression as parent for the map-entry Call"
-    Expression parent = Expression.methodParamMap(null)
     and: "some Expression as value for the map entry"
     Expression value = Expression.sentenceRoot()
     when: "mapEntry is called"
-    CallWithSubexpressions result = Call.mapEntry("key", value, parent)
+    CallWithSubexpressions result = Call.mapEntry("key", value)
     then: "the result has the correct structure of a map-entry Expression"
-    result.parent == parent
+    result.parent == CallOrigin.NONE
     result.value == "key"
     result.subexpressions.size() == 1
     result.subexpressions[0] == value
@@ -41,15 +40,14 @@ class CallSpec extends Specification {
       if (it instanceof Map) {
         Expression ex = methodParamMap(null)
         it.each {key, value ->
-          ex.calls << Call.objectRef(key, ex)
-          ex.calls << Call.objectRef(value, ex)
+          ex.calls << Call.mapEntry(key, value)
         }
         result.subexpressions << ex
       } else if (it instanceof Expression) {
         result.subexpressions << it
       } else {
         Expression ex = methodParamCallChain(null)
-        ex.calls << Call.objectRef(it, ex)
+        ex.calls << Call.objectRef(it, CallOrigin.NONE)
         result.subexpressions << ex
       }
     }

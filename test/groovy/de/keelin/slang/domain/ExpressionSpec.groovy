@@ -20,7 +20,7 @@ class ExpressionSpec extends Specification {
 
   static Expression methodParamCallChainWithOneObjectRefCall(ref) {
     Expression result = methodParamCallChain(null)
-    result.calls << objectRef(ref, result)
+    result.calls << objectRef(ref, CallOrigin.NONE)
     result
   }
 }

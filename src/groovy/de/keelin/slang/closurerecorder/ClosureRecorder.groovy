@@ -10,10 +10,12 @@ class ClosureRecorder {
 
   List<Expression> record(Closure closure) {
     List<Expression> sentences = []
-    RecordingDelegate delegate = new RecordingDelegate(new ClosureRecording(new DelegatePropertyRegistry(), sentences))
+    def registry = new DelegatePropertyRegistry()
+    RecordingDelegate delegate = new RecordingDelegate(new ClosureRecording(registry, sentences))
     def originalDelegate = closure.delegate
     closure.setDelegate(delegate)
     closure()
+    sentences.addAll(registry.expressions)
     closure.setDelegate(originalDelegate)
     sentences
   }
