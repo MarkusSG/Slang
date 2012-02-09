@@ -24,7 +24,7 @@ class ClosureRecorderSpec extends Specification {
     }
     when: "record() is called on the recorder"
     List<Expression> result = recorder.record(closure)
-    then: "the rescording matches the input closure"
+    then: "the recording matches the input closure"
     result.size() == 4
     result[0].words == ["feral"]
     result[1].words == ["the", "quick", "brown", "fox"]

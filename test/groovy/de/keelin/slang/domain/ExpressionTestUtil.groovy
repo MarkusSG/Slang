@@ -19,6 +19,15 @@ class ExpressionTestUtil {
     List errors = []
     expression.calls.each {call ->
       if (call instanceof Call) {
+        if (!call.value) {
+          errors << "Call (at the beginning of ${call.words}) has no value"
+        }
+        if (!call.parent) {
+          errors << "${call.value} (at the beginning of ${call.words}) has no parent"
+        }
+        if (!call.type) {
+          errors << "${call.value} (at the beginning of ${call.words}) has no type"
+        }
         if (call instanceof CallWithSubexpressions){
           errors.addAll(checkHierarchy(call))
         }
@@ -37,9 +46,17 @@ class ExpressionTestUtil {
       if (expression instanceof Expression) {
         if (expression.parent != call) {
           errors << "${expression.type}:${expression.words} is a child of {${call.value}}, yet it's parent is ${expression.parent}"
-        } else {
-            errors.addAll(checkHierarchy(expression))
         }
+        if (!expression.type) {
+          errors << "Expression at the beginning of ${expression.words} has no type"
+        }
+        if (!expression.calls) {
+          errors << "Expression (child of ${expression.parent.value}) has no calls"
+        }
+        if (!expression.role) {
+          errors << "Expression at the beginning of ${expression.words} has no role"
+        }
+        errors.addAll(checkHierarchy(expression))
       } else if (expression instanceof Call){
         errors << "${expression.value} is a child of {${call.value}}"
       } else {
