@@ -1,6 +1,5 @@
 package de.keelin.slang.domain
 
-import static CallOrigin.*
 /**
  * Date: 31.01.12
  * Time: 12:41
@@ -15,8 +14,8 @@ class Call {
     new Call(name, CallType.PROPERTY_READ, parent)
   }
 
-  static Call objectRef(final value, final CallOrigin parent) {
-    new Call(value, CallType.OBJECT_REF, parent)
+  static Call objectRef(final value) {
+    new Call(value, CallType.OBJECT_REF, CallOrigin.NONE)
   }
 
   static CallWithSubexpressions propertyAssignment(final String name, final CallOrigin parent, final Expression value) {
@@ -32,13 +31,13 @@ class Call {
   }
 
   static CallWithSubexpressions mapEntry(key, Expression value) {
-    new CallWithSubexpressions(key, CallType.MAP_ENTRY, NONE, [value])
+    new CallWithSubexpressions(key, CallType.MAP_ENTRY, CallOrigin.NONE, [value])
   }
 
   static CallWithSubexpressions mapEntry(key, value) {
-    Expression valueExpression = Expression.methodParamCallChain(null)
-    valueExpression.calls << objectRef(value, null)
-    CallWithSubexpressions result = new CallWithSubexpressions(key, CallType.MAP_ENTRY, NONE, [valueExpression])
+    Expression valueExpression = Expression.methodParamCallChain()
+    valueExpression.calls << objectRef(value)
+    CallWithSubexpressions result = new CallWithSubexpressions(key, CallType.MAP_ENTRY, CallOrigin.NONE, [valueExpression])
     valueExpression.parent = result
     result
   }

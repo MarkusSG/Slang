@@ -59,15 +59,15 @@ class ExpressionRecording implements Recording{
         expression.parent = parent
         expression
       } else if (it instanceof Map) {
-        Expression mapExpression = methodParamMap(parent)
-
+        Expression mapExpression = methodParamMap()
+        mapExpression.parent = parent
         it.each {key, value ->
           Expression valueExpression
           if (value instanceof RecordingDelegate) {
             valueExpression = delegatePropertyRegistry.remove(value)
           } else {
-            valueExpression = Expression.methodParamCallChain(null)
-            valueExpression.calls << objectRef(value, null)
+            valueExpression = Expression.methodParamCallChain()
+            valueExpression.calls << objectRef(value)
           }
           mapExpression.calls << Call.mapEntry(key, valueExpression)
           valueExpression.role = ExpressionRole.MAP_VALUE
@@ -75,8 +75,9 @@ class ExpressionRecording implements Recording{
         }
         mapExpression
       } else {
-        Expression ex = methodParamCallChain(parent)
-        ex.calls << objectRef(it, null)
+        Expression ex = methodParamCallChain()
+        ex.parent = parent
+        ex.calls << objectRef(it)
         ex
       }
     }

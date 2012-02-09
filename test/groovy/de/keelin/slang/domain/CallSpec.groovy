@@ -15,7 +15,7 @@ class CallSpec extends Specification {
     call.words == expectedWords
     where:
     call                                                         | expectedWords
-    objectRef("text", null)                                      | ["text"]
+    objectRef("text")                                            | ["text"]
     methodWithParams("method", "param1", "param2")               | ["method", "param1", "param2"]
     methodWithParams("method", [key1: "param1", key2: "param2"]) | ["method", "key1", "param1", "key2", "param2"]
   }
@@ -38,7 +38,7 @@ class CallSpec extends Specification {
     CallWithSubexpressions result = method(name, null)
     params.each {
       if (it instanceof Map) {
-        Expression ex = methodParamMap(null)
+        Expression ex = methodParamMap()
         it.each {key, value ->
           ex.calls << Call.mapEntry(key, value)
         }
@@ -46,8 +46,8 @@ class CallSpec extends Specification {
       } else if (it instanceof Expression) {
         result.subexpressions << it
       } else {
-        Expression ex = methodParamCallChain(null)
-        ex.calls << Call.objectRef(it, CallOrigin.NONE)
+        Expression ex = methodParamCallChain()
+        ex.calls << Call.objectRef(it)
         result.subexpressions << ex
       }
     }

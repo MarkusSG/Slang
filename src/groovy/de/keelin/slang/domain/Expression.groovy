@@ -12,25 +12,24 @@ class Expression {
   ExpressionRole role
 
   static Expression sentenceRoot() {
-    new Expression (null, ExpressionType.CALL_CHAIN, ExpressionRole.SENTENCE_ROOT)
+    new Expression (ExpressionType.CALL_CHAIN, ExpressionRole.SENTENCE_ROOT)
   }
 
-  static Expression methodParamCallChain(Call parent) {
-    new Expression (parent, ExpressionType.CALL_CHAIN, ExpressionRole.METHOD_PARAM)
+  static Expression methodParamCallChain() {
+    new Expression (ExpressionType.CALL_CHAIN, ExpressionRole.METHOD_PARAM)
   }
 
-  static Expression methodParamMap(Call parent) {
-    new Expression (parent, ExpressionType.MAP, ExpressionRole.METHOD_PARAM)
+  static Expression methodParamMap() {
+    new Expression (ExpressionType.MAP, ExpressionRole.METHOD_PARAM)
   }
 
-  private Expression(Call parent, ExpressionType type, ExpressionRole role) {
-    this.parent = parent
+  private Expression(ExpressionType type, ExpressionRole role) {
     this.type = type
     this.role = role
   }
 
-  Expression(Call parent, List<Call> calls, ExpressionType type, ExpressionRole role) {
-    this(parent, type, role)
+  Expression(List<Call> calls, ExpressionType type, ExpressionRole role) {
+    this(type, role)
     this.calls += calls
   }
 
