@@ -1,9 +1,31 @@
 package de.keelin.slang.domain;
 
 /**
- * Date: 31.01.12
- * Time: 12:49
+ * Describes the syntactical type of a {@link Call}.
+ *
+ * @author Markus Günther
  */
 public enum CallType {
-  METHOD, PROPERTY_READ, PROPERTY_ASSIGNMENT, OBJECT_REF, MAP_ENTRY
+  /**
+   * a method call
+   */
+  METHOD,
+  /**
+   * any reading access to a property
+   * either on the {@link CallOrigin#DELEGATE}
+   * or the {@link CallOrigin#PREDECESSOR}
+   */
+  PROPERTY_READ,
+  /**
+   * Not yet implemented
+   */
+  PROPERTY_ASSIGNMENT,
+  /**
+   * any pogo
+   */
+  OBJECT_REF,
+  /**
+   * key-value pair in a Map (method parameter)
+   */
+  MAP_ENTRY
 }

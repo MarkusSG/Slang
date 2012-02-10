@@ -1,9 +1,17 @@
 package de.keelin.slang.domain;
 
 /**
- * Date: 31.01.12
- * Time: 14:28
+ * Describes the syntactical type of an {@link Expression}.
+ *
+ * @author Markus Günther
  */
 public enum ExpressionType {
-  CALL_CHAIN, MAP
+  /**
+   * a chain of {@link Call}s
+   */
+  CALL_CHAIN,
+  /**
+   * a Map (probably used as method parameter
+   */
+  MAP
 }

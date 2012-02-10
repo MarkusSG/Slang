@@ -1,9 +1,17 @@
 package de.keelin.slang.domain
 
 /**
- * Date: 08.02.12
- * Time: 16:38
+ * Describes the invocation background of a {@link Call}.
+ *
+ * @author Markus Günther
  */
 enum CallOrigin {
-  PREDECESSOR, DELEGATE, NONE
+  // any call in a call chain, except the first
+  PREDECESSOR,
+  // the first call in every call chain,
+  // a property name used as method
+  // parameter or assignment value
+  DELEGATE,
+  // any pogo
+  NONE
 }

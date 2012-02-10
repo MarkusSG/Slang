@@ -1,9 +1,25 @@
 package de.keelin.slang.domain;
 
 /**
- * Date: 31.01.12
- * Time: 14:33
+ * Describes the role of an Expression within it's sentence.
+ *
+ * @author Markus Günther
  */
 public enum ExpressionRole {
-  SENTENCE_ROOT, METHOD_PARAM, MAP_VALUE, ASSIGNMENT_VALUE
+  /**
+   * the expression that encloses the whole sentence
+   */
+  SENTENCE_ROOT,
+  /**
+   * any Expression that has a method-Call as its parent
+   */
+  METHOD_PARAM,
+  /**
+   * any Expression used as value in a Map entry
+   */
+  MAP_VALUE,
+  /**
+   * Not yet implemented
+   */
+  ASSIGNMENT_VALUE
 }

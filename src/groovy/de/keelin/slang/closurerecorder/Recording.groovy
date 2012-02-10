@@ -2,6 +2,8 @@ package de.keelin.slang.closurerecorder
 
 /**
  * Interface for classes storing recorded calls.
+ *
+ * @author Markus Günther
  */
 protected interface Recording {
 
