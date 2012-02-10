@@ -10,6 +10,7 @@ import de.keelin.slang.domain.ExpressionTestUtil
 
 import static de.keelin.slang.domain.Expression.*
 import de.keelin.slang.domain.ExpressionRole
+
 /**
  * Date: 31.01.12
  * Time: 16:09
@@ -87,11 +88,20 @@ class ExpressionRecordingSpec extends Specification {
     recording.recordMethodCall("prepMethod", ["prepParam1", "prepParam2"])
     when : "the recording shall record a simple property read"
     recording.recordPropertyRead("testProp")
-    then :
+    then : "both the method call and the property read are recorded"
     recording.size == 4
     recording.expression.calls.size() == 2
     recording.words == ["prepMethod", "prepParam1", "prepParam2", "testProp"]
     recording.expression.calls[1].type == CallType.PROPERTY_READ
+  }
+
+  def "recordPropertyRead() and recordMethodCall() both return null" () {
+    when: "recordPropertyRead() and recordMethodCall() are called"
+    def methodResult = recording.recordMethodCall("testMethod", ["parameter1"])
+    def propResult = recording.recordPropertyRead("testProp")
+    then: "the result is always null"
+    methodResult == null
+    propResult == null
   }
 
 }

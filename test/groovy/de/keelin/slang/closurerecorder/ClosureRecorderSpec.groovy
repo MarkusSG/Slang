@@ -20,21 +20,24 @@ class ClosureRecorderSpec extends Specification {
       feral
       the quick, brown fox
       jumps over: the lazy dog
+      and thus the whole alphabet is used
       yeah
     }
     when: "record() is called on the recorder"
     List<Expression> result = recorder.record(closure)
     then: "the recording matches the input closure"
-    result.size() == 4
+    result.size() == 5
     result[0].words == ["feral"]
     result[1].words == ["the", "quick", "brown", "fox"]
     result[2].words == ["jumps", "over", "the", "lazy", "dog"]
-    result[3].words == ["yeah"]
+    result[3].words == ["and", "thus", "the", "whole", "alphabet", "is", "used"]
+    result[4].words == ["yeah"]
     and: "is structurally sound"
     ExpressionTestUtil.checkHierarchy(result[0]) == []
     ExpressionTestUtil.checkHierarchy(result[1]) == []
     ExpressionTestUtil.checkHierarchy(result[2]) == []
     ExpressionTestUtil.checkHierarchy(result[3]) == []
+    ExpressionTestUtil.checkHierarchy(result[4]) == []
     // feral
     result[0].calls[0].origin == CallOrigin.DELEGATE
     // the
@@ -60,5 +63,7 @@ class ClosureRecorderSpec extends Specification {
     then: "the closure's delegate is the same as before"
     delegate == closure.delegate
   }
+
+
 
 }

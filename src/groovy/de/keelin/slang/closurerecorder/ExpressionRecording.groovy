@@ -75,6 +75,7 @@ class ExpressionRecording implements Recording{
     origin = CallOrigin.PREDECESSOR
     expression.calls << method
     method.subexpressions.addAll(convertParams(params, method))
+    return null
   }
 
   /**
@@ -89,6 +90,7 @@ class ExpressionRecording implements Recording{
     initRootExpression()
     expression.calls << propertyRead(name, origin)
     origin = CallOrigin.PREDECESSOR
+    return null
   }
 
   private void initRootExpression() {

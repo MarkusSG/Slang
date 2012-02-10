@@ -25,4 +25,22 @@ class RecordingDelegateSpec extends Specification {
     1 * recording.recordPropertyRead("someProperty")
   }
 
+  def "recordMethodCall() will return itself if the recording returns nothing" () {
+    given: "the recording returns null for recordMethodCall()"
+    recording.recordMethodCall("someMethod", []) >> null
+    when : "some method gets called on the delegate"
+    def result = delegate.someMethod()
+    then : "the result will be the delegate itself"
+    result == delegate
+  }
+
+  def "recordPropertyRead will return itself if the recording returns nothing" () {
+    given: "the recording returns null for recordMethodCall()"
+    recording.recordPropertyRead("someProp") >> null
+    when : "some property gets asked from the delegate"
+    def result = delegate.someProp
+    then : "the result will be the delegate itself"
+    result == delegate
+  }
+
 }
