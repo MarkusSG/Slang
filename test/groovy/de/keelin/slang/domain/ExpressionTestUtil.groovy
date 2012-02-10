@@ -27,8 +27,8 @@ class ExpressionTestUtil {
         if (!call.value) {
           errors << "Call (at the beginning of ${call.words}) has no value"
         }
-        if (!call.parent) {
-          errors << "${call.value} (at the beginning of ${call.words}) has no parent"
+        if (!call.origin) {
+          errors << "${call.value} (at the beginning of ${call.words}) has no origin"
         }
         if (!call.type) {
           errors << "${call.value} (at the beginning of ${call.words}) has no type"

@@ -21,13 +21,13 @@ class CallSpec extends Specification {
   }
 
   def "mapEntry() creates a map-entry Call" () {
-    given: "a Map Expression as parent for the map-entry Call"
+    given: "a Map Expression as origin for the map-entry Call"
     and: "some Expression as value for the map entry"
     Expression value = Expression.sentenceRoot()
     when: "mapEntry is called"
     CallWithSubexpressions result = Call.mapEntry("key", value)
     then: "the result has the correct structure of a map-entry Expression"
-    result.parent == CallOrigin.NONE
+    result.origin == CallOrigin.NONE
     result.value == "key"
     result.subexpressions.size() == 1
     result.subexpressions[0] == value

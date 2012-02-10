@@ -7,7 +7,7 @@ package de.keelin.slang.domain
 class Call {
 
   final def value
-  final CallOrigin parent
+  final CallOrigin origin
   final CallType type
 
   static Call propertyRead(final String name, final CallOrigin parent) {
@@ -42,9 +42,9 @@ class Call {
     result
   }
 
-  Call(final value, final CallType type, final CallOrigin parent) {
+  Call(final value, final CallType type, final CallOrigin origin) {
     this.value = value
-    this.parent = parent
+    this.origin = origin
     this.type = type
   }
 

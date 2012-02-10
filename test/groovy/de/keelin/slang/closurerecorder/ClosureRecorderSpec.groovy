@@ -36,17 +36,17 @@ class ClosureRecorderSpec extends Specification {
     ExpressionTestUtil.checkHierarchy(result[2]) == []
     ExpressionTestUtil.checkHierarchy(result[3]) == []
     // feral
-    result[0].calls[0].parent == CallOrigin.DELEGATE
+    result[0].calls[0].origin == CallOrigin.DELEGATE
     // the
-    result[1].calls[0].parent == CallOrigin.DELEGATE
+    result[1].calls[0].origin == CallOrigin.DELEGATE
     // fox
-    result[1].calls[1].parent == CallOrigin.PREDECESSOR
+    result[1].calls[1].origin == CallOrigin.PREDECESSOR
     result[1].calls[1].type == CallType.PROPERTY_READ
     // over
-    result[2].calls[0].subexpressions[0].calls[0].parent == CallOrigin.NONE
+    result[2].calls[0].subexpressions[0].calls[0].origin == CallOrigin.NONE
     result[2].calls[0].subexpressions[0].calls[0].type == CallType.MAP_ENTRY
     // the
-    result[2].calls[0].subexpressions[0].calls[0].subexpressions[0].calls[0].parent == CallOrigin.DELEGATE
+    result[2].calls[0].subexpressions[0].calls[0].subexpressions[0].calls[0].origin == CallOrigin.DELEGATE
     result[2].calls[0].subexpressions[0].calls[0].subexpressions[0].calls[0].type == CallType.PROPERTY_READ
   }
 
