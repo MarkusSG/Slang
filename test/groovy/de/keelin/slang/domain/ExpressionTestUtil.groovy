@@ -17,6 +17,11 @@ class ExpressionTestUtil {
 
   static def checkHierarchy(Expression expression) {
     List errors = []
+    // check that SENTENCE_ROOT has no parent and everyone else does
+    if ((expression.parent == null || expression.role == ExpressionRole.SENTENCE_ROOT) &&
+         !(expression.parent == null && expression.role == ExpressionRole.SENTENCE_ROOT)) {
+      errors << "Expression with words [${expression.words}] has role ${expression.role} and parent ${expression.parent}."
+    }
     expression.calls.each {call ->
       if (call instanceof Call) {
         if (!call.value) {
