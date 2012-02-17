@@ -18,28 +18,47 @@ class ExpressionTestUtil {
   static def checkHierarchy(Expression expression) {
     List errors = []
     // check that SENTENCE_ROOT has no parent and everyone else does
-    if ((expression.parent == null || expression.role == ExpressionRole.SENTENCE_ROOT) &&
-         !(expression.parent == null && expression.role == ExpressionRole.SENTENCE_ROOT)) {
-      errors << "Expression with words [${expression.words}] has role ${expression.role} and parent ${expression.parent}."
+    if ((expression.parent == null ^ expression.role == ExpressionRole.SENTENCE_ROOT)) {
+      errors << "1: Expression with words [${expression.words}] has role ${expression.role} and parent ${expression.parent}."
     }
+    // check that method params have method calls as parents
+    if (expression.role == ExpressionRole.METHOD_PARAM && expression.parent?.type != CallType.METHOD ) {
+      errors << "2: Expression with words [${expression.words}] has role ${expression.role} and a parent of type ${expression.parent?.type}."
+    }
+    // check that only method params have method calls as parents
+    if (expression.role != ExpressionRole.METHOD_PARAM && expression.parent?.type == CallType.METHOD ) {
+      errors << "3: Expression with words [${expression.words}] has role ${expression.role} and a parent of type METHOD_CALL."
+    }
+    // check that Map values have Map entries as parents
+    if (expression.role == ExpressionRole.MAP_VALUE && expression.parent?.type != CallType.MAP_ENTRY) {
+      errors << "4: Expression with words [${expression.words}] has role ${expression.role} and a parent of type ${expression.parent?.type}."
+    }
+    // check that only Map values have Map entries as parents
+    if (expression.role != ExpressionRole.MAP_VALUE && expression.parent?.type == CallType.MAP_ENTRY) {
+      errors << "5: Expression with words [${expression.words}] has role ${expression.role} and a parent of type MAP_ENTRY."
+    }
+    // check calls
     expression.calls.each {call ->
       if (call instanceof Call) {
+        if (expression.type == ExpressionType.MAP && call.type != CallType.MAP_ENTRY) {
+          errors << "6: Expression with words [${expression.words}] has type MAP and a child of type ${call.type}."
+        }
         if (!call.value) {
-          errors << "Call (at the beginning of ${call.words}) has no value"
+          errors << "7: Call (at the beginning of ${call.words}) has no value"
         }
         if (!call.origin) {
-          errors << "${call.value} (at the beginning of ${call.words}) has no origin"
+          errors << "8: ${call.value} (at the beginning of ${call.words}) has no origin"
         }
         if (!call.type) {
-          errors << "${call.value} (at the beginning of ${call.words}) has no type"
+          errors << "9: ${call.value} (at the beginning of ${call.words}) has no type"
         }
         if (call instanceof CallWithSubexpressions){
           errors.addAll(checkHierarchy(call))
         }
       } else if (call instanceof Expression){
-        errors << "Expression ${call.type}:${expression.words} is a child of Expression {${expression.type}:${expression.words}}"
+        errors << "10: Expression ${call.type}:${expression.words} is a child of Expression {${expression.type}:${expression.words}}"
       } else {
-        errors << "Object ${call.class.name} is a child of Expression {${expression.type}}"
+        errors << "11: Object ${call.class.name} is a child of Expression {${expression.type}}"
       }
     }
     errors
@@ -50,22 +69,22 @@ class ExpressionTestUtil {
     call.subexpressions.each {expression ->
       if (expression instanceof Expression) {
         if (expression.parent != call) {
-          errors << "${expression.type}:${expression.words} is a child of {${call.value}}, yet it's parent is ${expression.parent}"
+          errors << "12: ${expression.type}:${expression.words} is a child of {${call.value}}, yet it's parent is ${expression.parent}"
         }
         if (!expression.type) {
-          errors << "Expression at the beginning of ${expression.words} has no type"
+          errors << "13: Expression at the beginning of ${expression.words} has no type"
         }
         if (!expression.calls) {
-          errors << "Expression (child of ${expression.parent.value}) has no calls"
+          errors << "14: Expression (child of ${expression.parent.value}) has no calls"
         }
         if (!expression.role) {
-          errors << "Expression at the beginning of ${expression.words} has no role"
+          errors << "15: Expression at the beginning of ${expression.words} has no role"
         }
         errors.addAll(checkHierarchy(expression))
       } else if (expression instanceof Call){
         errors << "${expression.value} is a child of {${call.value}}"
       } else {
-        errors << "Object ${expression.class.name} is a child of Expression {${call.value}}"
+        errors << "16: Object ${expression.class.name} is a child of Expression {${call.value}}"
       }
     }
     errors
