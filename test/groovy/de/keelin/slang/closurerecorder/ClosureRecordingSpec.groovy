@@ -36,7 +36,7 @@ class ClosureRecordingSpec extends Specification {
       registry.getExpression(expressionDelegate) == null
     }
 
-  def "recordMethodCall converts all unused root property accesses to new sentences (in the correct order)" () {
+  def "recordMethodCall() converts all unused root property accesses to new sentences (in the correct order)" () {
     given: "a recording with a couple of unused property reads in the registry"
     recording.recordPropertyRead("prop1")
     recording.recordPropertyRead("prop2")
@@ -50,5 +50,21 @@ class ClosureRecordingSpec extends Specification {
     recording.sentences[0].words == ["prop1"]
     recording.sentences[1].words == ["prop2"]
     recording.sentences[2].words == ["method", "prop3"]
+  }
+
+  def "finishRecording() converts all unused root property accesses to new sentences (in the correct order)" () {
+    given: "a recording with a couple of unused property reads in the registry"
+    recording.recordPropertyRead("prop1")
+    recording.recordPropertyRead("prop2")
+    recording.recordPropertyRead("prop3")
+    when: "finishRecording() is called"
+    recording.finishRecording()
+    then: "the registry is empty"
+    registry.expressions.isEmpty()
+    and: "all property reads have been converted into sentences in the right order"
+    recording.sentences.size() == 3
+    recording.sentences[0].words == ["prop1"]
+    recording.sentences[1].words == ["prop2"]
+    recording.sentences[2].words == ["prop3"]
   }
 }

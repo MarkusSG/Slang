@@ -84,12 +84,29 @@ protected class ClosureRecording implements Recording{
     recording.recordMethodCall(name, args)
     // now move all remaining Expressions from the
     // registry to sentences
-    sentences.addAll(registry.expressions)
-    registry.expressions.clear()
+    convertRegistrySentences()
     // and finally add the new sentence
     sentences << expression
     RecordingDelegate result = new RecordingDelegate(recording)
     result
+  }
+
+  /**
+   * This method takes care of unfinished sentences
+   * and the like. It should be called after the
+   * Closure has been executed.
+   */
+  void finishRecording() {
+    convertRegistrySentences()
+  }
+
+  /**
+   * converts all expressions currently held in
+   * the registry into sentences.
+   */
+  private void convertRegistrySentences() {
+    sentences.addAll(registry.expressions)
+    registry.expressions.clear()
   }
 
 }
