@@ -1,11 +1,11 @@
-package de.keelin.slang.domain;
+package de.keelin.slang.domain
 
 /**
  * Describes the syntactical type of a {@link Call}.
  *
  * @author Markus Günther
  */
-public enum CallType {
+enum CallType {
   /**
    * a method call
    */

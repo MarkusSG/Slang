@@ -1,11 +1,11 @@
-package de.keelin.slang.domain;
+package de.keelin.slang.domain
 
 /**
  * Describes the syntactical type of an {@link Expression}.
  *
  * @author Markus Günther
  */
-public enum ExpressionType {
+enum ExpressionType {
   /**
    * a chain of {@link Call}s
    */

@@ -1,11 +1,11 @@
-package de.keelin.slang.domain;
+package de.keelin.slang.domain
 
 /**
  * Describes the role of an Expression within it's sentence.
  *
  * @author Markus Günther
  */
-public enum ExpressionRole {
+enum ExpressionRole {
   /**
    * the expression that encloses the whole sentence
    */
